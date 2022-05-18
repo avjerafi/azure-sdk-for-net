@@ -13,13 +13,15 @@ namespace Microsoft.Azure.Management.Monitor.Models
     using Microsoft.Rest;
     using Microsoft.Rest.Azure;
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// An azure resource object
+    /// Resource
     /// </summary>
+    /// <remarks>
+    /// Common fields that are returned in the response for all Azure Resource
+    /// Manager resources
+    /// </remarks>
     public partial class Resource : IResource
     {
         /// <summary>
@@ -33,31 +35,17 @@ namespace Microsoft.Azure.Management.Monitor.Models
         /// <summary>
         /// Initializes a new instance of the Resource class.
         /// </summary>
-        /// <param name="location">Resource location</param>
-        /// <param name="id">Azure resource Id</param>
-        /// <param name="name">Azure resource name</param>
-        /// <param name="type">Azure resource type</param>
-        /// <param name="tags">Resource tags</param>
-        /// <param name="kind">Metadata used by portal/tooling/etc to render
-        /// different UX experiences for resources of the same type; e.g.
-        /// ApiApps are a kind of Microsoft.Web/sites type.  If supported, the
-        /// resource provider must validate and persist this value.</param>
-        /// <param name="etag">The etag field is *not* required. If it is
-        /// provided in the response body, it must also be provided as a header
-        /// per the normal etag convention.  Entity tags are used for comparing
-        /// two or more entities from the same requested resource. HTTP/1.1
-        /// uses entity tags in the etag (section 14.19), If-Match (section
-        /// 14.24), If-None-Match (section 14.26), and If-Range (section 14.27)
-        /// header fields. </param>
-        public Resource(string location, string id = default(string), string name = default(string), string type = default(string), IDictionary<string, string> tags = default(IDictionary<string, string>), string kind = default(string), string etag = default(string))
+        /// <param name="id">Fully qualified resource ID for the resource. Ex -
+        /// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}</param>
+        /// <param name="name">The name of the resource</param>
+        /// <param name="type">The type of the resource. E.g.
+        /// "Microsoft.Compute/virtualMachines" or
+        /// "Microsoft.Storage/storageAccounts"</param>
+        public Resource(string id = default(string), string name = default(string), string type = default(string))
         {
             Id = id;
             Name = name;
             Type = type;
-            Location = location;
-            Tags = tags;
-            Kind = kind;
-            Etag = etag;
             CustomInit();
         }
 
@@ -67,68 +55,25 @@ namespace Microsoft.Azure.Management.Monitor.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets azure resource Id
+        /// Gets fully qualified resource ID for the resource. Ex -
+        /// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
         /// </summary>
         [JsonProperty(PropertyName = "id")]
         public string Id { get; private set; }
 
         /// <summary>
-        /// Gets azure resource name
+        /// Gets the name of the resource
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets azure resource type
+        /// Gets the type of the resource. E.g.
+        /// "Microsoft.Compute/virtualMachines" or
+        /// "Microsoft.Storage/storageAccounts"
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         public string Type { get; private set; }
 
-        /// <summary>
-        /// Gets or sets resource location
-        /// </summary>
-        [JsonProperty(PropertyName = "location")]
-        public string Location { get; set; }
-
-        /// <summary>
-        /// Gets or sets resource tags
-        /// </summary>
-        [JsonProperty(PropertyName = "tags")]
-        public IDictionary<string, string> Tags { get; set; }
-
-        /// <summary>
-        /// Gets metadata used by portal/tooling/etc to render different UX
-        /// experiences for resources of the same type; e.g. ApiApps are a kind
-        /// of Microsoft.Web/sites type.  If supported, the resource provider
-        /// must validate and persist this value.
-        /// </summary>
-        [JsonProperty(PropertyName = "kind")]
-        public string Kind { get; private set; }
-
-        /// <summary>
-        /// Gets the etag field is *not* required. If it is provided in the
-        /// response body, it must also be provided as a header per the normal
-        /// etag convention.  Entity tags are used for comparing two or more
-        /// entities from the same requested resource. HTTP/1.1 uses entity
-        /// tags in the etag (section 14.19), If-Match (section 14.24),
-        /// If-None-Match (section 14.26), and If-Range (section 14.27) header
-        /// fields.
-        /// </summary>
-        [JsonProperty(PropertyName = "etag")]
-        public string Etag { get; private set; }
-
-        /// <summary>
-        /// Validate the object.
-        /// </summary>
-        /// <exception cref="ValidationException">
-        /// Thrown if validation fails
-        /// </exception>
-        public virtual void Validate()
-        {
-            if (Location == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "Location");
-            }
-        }
     }
 }
